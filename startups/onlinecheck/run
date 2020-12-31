@@ -1,0 +1,13 @@
+#!/bin/sh
+
+## check every 180 seconds if vpn is working by ping 8.8.4.4
+
+while true
+	sleep 180
+	do
+	if ping -w 10 -c1 8.8.4.4 &> /dev/null; then
+		echo "ping ok"; else
+			echo "we seem to be offline, restarting openvpn"
+			killall openvpn
+		fi
+done

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+OVPN_FILEPATH="/config/${OPENVPN_FILE}"
+
+if [ -f "$OVPN_FILEPATH" ]; then
+	echo "$OVPN_FILEPATH exist"
+	chmod +x $OVPN_FILEPATH
+	chmod 777 $OVPN_FILEPATH
+else 
+	echo "$OVPN_FILEPATH does not exist, copy default"
+	cp /Frankfurt.ovpn /config/Frankfurt.ovpn
+	chmod +x /config/Frankfurt.ovpn
+	chmod 777 /config/Frankfurt.ovpn
+fi
+
+LOGIN_CONF="/config/logindata.conf"
+
+if [ -f "$LOGIN_CONF" ]; then
+	echo "$LOGIN_CONF exist"
+	chmod +x $LOGIN_CONF
+	chmod 777 $LOGIN_CONF
+else 
+	echo "$LOGIN_CONF does not exist"
+	cp /logindata.conf $LOGIN_CONF
+	chmod +x $LOGIN_CONF
+	chmod 777 $LOGIN_CONF
+fi
+
+authpass='auth-user-pass /config/logindata.conf'
+sed -i "/auth-user-pass/c $authpass" $OVPN_FILEPATH
+
+### OpenVPN
+
+openvpn --config $OVPN_FILEPATH
+
