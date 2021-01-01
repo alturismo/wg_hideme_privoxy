@@ -1,35 +1,47 @@
 #!/bin/bash
 
-OVPN_FILEPATH="/config/${OPENVPN_FILE}"
+HIDEME_FILEPATH="/config/${HIDEME_FILE}"
 
-if [ -f "$OVPN_FILEPATH" ]; then
-	echo "$OVPN_FILEPATH exist"
-	chmod +x $OVPN_FILEPATH
-	chmod 777 $OVPN_FILEPATH
+if [ -f "$HIDEME_FILEPATH" ]; then
+	echo "$HIDEME_FILEPATH exist"
+	chmod +x $HIDEME_FILEPATH
+	chmod 777 $HIDEME_FILEPATH
 else 
-	echo "$OVPN_FILEPATH does not exist, copy default"
-	cp /Frankfurt.ovpn /config/Frankfurt.ovpn
-	chmod +x /config/Frankfurt.ovpn
-	chmod 777 /config/Frankfurt.ovpn
+	echo "$HIDEME_FILEPATH does not exist, copy default"
+	cp /hideme.yaml /config/hideme.yaml
+	chmod +x /config/hideme.yaml
+	chmod 777 /config/hideme.yaml
 fi
 
-LOGIN_CONF="/config/logindata.conf"
+CA_FILEPATH="/config/CA.pem"
 
-if [ -f "$LOGIN_CONF" ]; then
-	echo "$LOGIN_CONF exist"
-	chmod +x $LOGIN_CONF
-	chmod 777 $LOGIN_CONF
+if [ -f "$CA_FILEPATH" ]; then
+	echo "$CA_FILEPATH exist"
+	chmod +x $CA_FILEPATH
+	chmod 777 $CA_FILEPATH
 else 
-	echo "$LOGIN_CONF does not exist"
-	cp /logindata.conf $LOGIN_CONF
-	chmod +x $LOGIN_CONF
-	chmod 777 $LOGIN_CONF
+	echo "$CA_FILEPATH does not exist, copy default"
+	cp /CA.pem /config/CA.pem
+	chmod +x /config/CA.pem
+	chmod 777 /config/CA.pem
 fi
 
-authpass='auth-user-pass /config/logindata.conf'
-sed -i "/auth-user-pass/c $authpass" $OVPN_FILEPATH
+### get access token if not exist
 
-### OpenVPN
+AT_FILEPATH="/config/accessToken.txt"
 
-openvpn --config $OVPN_FILEPATH
+if [ -f "$AT_FILEPATH" ]; then
+	echo "$AT_FILEPATH exist"
+	chmod +x $AT_FILEPATH
+	chmod 777 $AT_FILEPATH
+else 
+	echo "$AT_FILEPATH does not exist, creating new one"
+	hide.client.linux -u ${HIDEME_USER} -P ${HIDEME_PASS} token ${HIDEME_SERVER}
+	cp accessToken.txt "$AT_FILEPATH"
+	chmod +x /config/accessToken.txt
+	chmod 777 /config/accessToken.txt
+fi
 
+### start HideMe
+
+hide.client.linux -4 -s ${LOCAL_NET} -u ${HIDEME_USER} -P ${HIDEME_PASS} -c /config/hideme.yaml connect ${HIDEME_SERVER}

@@ -8,6 +8,6 @@ while true
 	if ping -w 10 -c1 8.8.4.4 &> /dev/null; then
 		echo "ping ok"; else
 			echo "we seem to be offline, restarting openvpn"
-			killall openvpn
+			killall hide.client.linux
 		fi
 done
