@@ -1,5 +1,3 @@
-MAINTAINER alturismo alturismo@gmail.com
-
 FROM alpine:latest
 RUN apk update
 RUN apk upgrade
@@ -13,6 +11,8 @@ RUN tar -xzvf v1.0.1.tar.gz \
     && make \
     && make install \
 	&& apk del make gcc musl-dev
+
+MAINTAINER alturismo alturismo@gmail.com
 
 # Timezone (TZ)
 RUN apk update && apk add --no-cache tzdata
