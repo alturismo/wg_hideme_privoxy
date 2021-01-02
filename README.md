@@ -35,7 +35,7 @@ HIDEME_USER - your HideMe username for your vpn \
 HIDEME_PASS - your HideMe password for your vpn \
 TZ - Timezone, not relevant for function
 
-port 8080 privoxy
+port 8080 privoxy \
 port 1080 socks proxy
 
 ## hideme.client will replace dns servers and has a killswitch included, also reconnections are set to check every 3 minutes in case of disconnects
