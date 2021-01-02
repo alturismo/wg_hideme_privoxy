@@ -36,7 +36,7 @@ if [ -f "$AT_FILEPATH" ]; then
 	chmod 777 $AT_FILEPATH
 else 
 	echo "$AT_FILEPATH does not exist, creating new one"
-	hide.client.linux -u ${HIDEME_USER} -P ${HIDEME_PASS} token ${HIDEME_SERVER}
+	hide.client.linux -ca $CA_FILEPATH -u ${HIDEME_USER} -P ${HIDEME_PASS} token ${HIDEME_SERVER}
 	cp accessToken.txt "$AT_FILEPATH"
 	chmod +x /config/accessToken.txt
 	chmod 777 /config/accessToken.txt
@@ -44,4 +44,4 @@ fi
 
 ### start HideMe
 
-hide.client.linux -4 -s ${LOCAL_NET} -u ${HIDEME_USER} -P ${HIDEME_PASS} -c /config/hideme.yaml connect ${HIDEME_SERVER}
+hide.client.linux -4 -s ${LOCAL_NET} -ca $CA_FILEPATH -t $AT_FILEPATH -u ${HIDEME_USER} -P ${HIDEME_PASS} -c /config/hideme.yaml connect ${HIDEME_SERVER}
