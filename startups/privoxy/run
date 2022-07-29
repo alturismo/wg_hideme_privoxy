@@ -1,8 +1,17 @@
 #!/bin/sh
 
+if [ ${HIDEME_PRIVOXY} == "off" ]; then
+
+echo "privoxy disable"
+exit
+
+else
+
 ### Start Privoxy
 
 sleep 7
 
 # start
 privoxy --no-daemon
+
+fi
