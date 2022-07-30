@@ -6,7 +6,7 @@ if [ ${HIDEME_SOCKS} == "off" ]; then
 
 echo "microsocks disabled"
 
-exit
+sleep infinity
 
 else
 
