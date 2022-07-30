@@ -4,7 +4,8 @@
 
 if [ ${HIDEME_SOCKS} == "off" ]; then
 
-echo "microsocks disable"
+echo "microsocks disabled"
+
 exit
 
 else
