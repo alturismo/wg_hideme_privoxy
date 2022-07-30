@@ -3,7 +3,8 @@
 if [ ${HIDEME_PRIVOXY} == "off" ]; then
 
 echo "privoxy disable"
-exit
+
+sleep infinity
 
 else
 
