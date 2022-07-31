@@ -2,12 +2,21 @@
 
 ## check every 180 seconds if vpn is working by ping 8.8.4.4
 
-while true
-	sleep 180
-	do
-	if ping -w 10 -c1 8.8.4.4 &> /dev/null; then
-		echo "ping ok"; else
-			echo "we seem to be offline, restarting openvpn"
-			killall hide.client.linux
-		fi
-done
+if [ "${ONLINECHECK}" == "off" ]; then
+	echo "onlinecheck disabled"
+	sleep infinity
+else
+	if [ -z "${ONLINECHECK_IP}" ]; then
+		ONLINECHECK_IP=8.8.4.4
+	fi
+
+	while true
+		sleep 180
+		do
+		if ping -w 10 -c1 ${ONLINECHECK_IP} &> /dev/null; then
+			echo "ping ok"; else
+				echo "we seem to be offline, restarting openvpn"
+				killall hide.client.linux
+			fi
+	done
+fi

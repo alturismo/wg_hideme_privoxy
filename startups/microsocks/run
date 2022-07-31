@@ -2,9 +2,17 @@
 
 ### Start microsocks
 
+if [ ${HIDEME_SOCKS} == "off" ]; then
+
+echo "microsocks disabled"
+
+sleep infinity
+
+else
+
 sleep 15
 
 # start
 echo "microsocks started"
-
 microsocks
+fi

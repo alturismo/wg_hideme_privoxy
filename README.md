@@ -33,6 +33,11 @@ HIDEME_SERVER - HideMe Server to use \
 HIDEME_FILE - configuration file, only edit when you know what you do \
 HIDEME_USER - your HideMe username for your vpn \
 HIDEME_PASS - your HideMe password for your vpn \
+HIDEME_SOCKS - set to ```off``` to disable \
+HIDEME_PRIVOXY - set to ```off``` to disable \
+ONLINECHECK - set to ```off``` to disable \
+ONLINECHECK_IP - default ```8.8.4.4``` set own to change \
+
 TZ - Timezone, not relevant for function
 
 port 8080 privoxy \
