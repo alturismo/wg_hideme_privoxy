@@ -1,18 +1,21 @@
 #!/bin/sh
 
 if [ ${HIDEME_PRIVOXY} == "off" ]; then
-
-echo "privoxy disabled"
-
-sleep infinity
-
+  echo "privoxy disabled"
+  sleep infinity
 else
+  ### Check if config exist
+  if [ -f ${PR_FILEPATH} ]; then
+    echo "${PR_FILEPATH} exist"
+    chmod 777 ${PR_FILEPATH}
+  else 
+    echo "${PR_FILEPATH} does not exist, copy default"
+    cp /opt/defaults/privoxy_config ${PR_FILEPATH}
+    chmod 777 ${PR_FILEPATH}
+  fi
 
-### Start Privoxy
-
-sleep 7
-
-# start
-privoxy --no-daemon
-
+  ### Start Privoxy
+  sleep 7
+  # start
+  privoxy --no-daemon ${PR_FILEPATH}
 fi

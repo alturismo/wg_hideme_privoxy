@@ -49,16 +49,23 @@ RUN apk add --no-cache bash busybox-suid su-exec
 # Volumes
 VOLUME /config
 
-# Add Files
-RUN chmod +x /usr/bin/hide.client.linux
-COPY hideme.yaml /
-COPY CA.pem /
-COPY startups /startups
+# Default env variables
+ENV HIDEME_SOCKS="on"
+ENV HIDEME_PRIVOXY="on"
+ENV CA_FILEPATH="/config/cert.pem"
+ENV AT_FILEPATH="/config/accessToken.txt"
+ENV PR_FILEPATH="/config/privoxy_config"
+ENV START_PARAMS=""
 
-RUN find /startups -name run | xargs chmod u+x
+# Add Files
+RUN chmod +x /usr/bin/hide.me
+COPY defaults /opt/defaults
+COPY startups /opt/startups
+
+RUN find /opt/startups -name run | xargs chmod u+x
 
 # Add Expose Port
 EXPOSE 8080 1080
 
 # Command
-CMD ["runsvdir", "/startups"]
+CMD ["runsvdir", "/opt/startups"]

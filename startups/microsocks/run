@@ -1,18 +1,12 @@
 #!/bin/sh
 
 ### Start microsocks
-
 if [ ${HIDEME_SOCKS} == "off" ]; then
-
-echo "microsocks disabled"
-
-sleep infinity
-
+  echo "microsocks disabled"
+  sleep infinity
 else
-
-sleep 15
-
-# start
-echo "microsocks started"
-microsocks
+  sleep 15
+  # start
+  echo "microsocks started"
+  microsocks
 fi
