@@ -14,8 +14,11 @@ else
     chmod 777 ${PR_FILEPATH}
   fi
 
-  ### Start Privoxy
-  sleep 7
+  ### wait until hide.me connect is found
+  while ! pgrep -af "/usr/bin/hide.me.*connect" >/dev/null; do
+    sleep 5
+  done
+  sleep 3
   # start
   privoxy --no-daemon ${PR_FILEPATH}
 fi

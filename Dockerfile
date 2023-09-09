@@ -44,7 +44,7 @@ RUN mkdir /lib64 && \
     ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 # Add Bash shell & dependancies
-RUN apk add --no-cache bash busybox-suid su-exec
+RUN apk add --no-cache bash busybox-suid su-exec screen
 
 # Default env variables
 ENV HIDEME_SOCKS="on"
@@ -53,6 +53,7 @@ ENV CA_FILEPATH="/config/cert.pem"
 ENV AT_FILEPATH="/config/accessToken.txt"
 ENV PR_FILEPATH="/config/privoxy_config"
 ENV START_PARAMS=""
+ENV TOKEN_PARAMS=""
 
 # Volumes
 VOLUME /config

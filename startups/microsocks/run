@@ -5,7 +5,11 @@ if [ ${HIDEME_SOCKS} == "off" ]; then
   echo "microsocks disabled"
   sleep infinity
 else
-  sleep 15
+  ### wait until hide.me connect is found
+  while ! pgrep -af "/usr/bin/hide.me.*connect" >/dev/null; do
+    sleep 5
+  done
+  sleep 3
   # start
   echo "microsocks started"
   microsocks
