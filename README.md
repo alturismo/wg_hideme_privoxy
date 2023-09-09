@@ -12,17 +12,15 @@ docker run -d \
   --net=bridge \
   --log-opt max-size=10m \
   --log-opt max-file=3 \
-  --privileged=true \
   -e TZ="Europe/Berlin" \
   -e LOCAL_NET=192.168.1.0/24 \
-  -e HIDEME_SERVER=de.hideservers.net \
-  -e HIDEME_FILE=hideme.yaml \
+  -e HIDEME_SERVER=de \
   -e HIDEME_USER=hidemeLogin \
   -e HIDEME_PASS=hidemePass \
   -p 8080:8080/tcp \
   -p 1080:1080/tcp \
   -v /mnt/user/appdata/wg_hideme_privoxy/:/config:rw \
-  --cap-add=NET_ADMIN --device /dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=0 --dns=8.8.8.8 \
+  --cap-add=NET_ADMIN --device /dev/net/tun --sysctl net.ipv6.conf.all.disable_ipv6=1 \
   alturismo/wg_hideme_privoxy
 ```
 
@@ -30,13 +28,10 @@ docker run -d \
 
 LOCAL_NET - CIDR mask of the local IP addresses which will acess the proxy and bypass it, comma seperated \
 HIDEME_SERVER - HideMe Server to use \
-HIDEME_FILE - configuration file, only edit when you know what you do \
 HIDEME_USER - your HideMe username for your vpn \
 HIDEME_PASS - your HideMe password for your vpn \
 HIDEME_SOCKS - set to ```off``` to disable \
 HIDEME_PRIVOXY - set to ```off``` to disable \
-ONLINECHECK - set to ```off``` to disable \
-ONLINECHECK_IP - default ```8.8.4.4``` set own to change \
 
 TZ - Timezone, not relevant for function
 

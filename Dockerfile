@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.authors="alturismo@gmail.com"
 
 # Set Variables
 ARG MICROSOCKS_V=1.0.3
-ARG HIDEME_V=0.9.2
+ARG HIDEME_V=0.9.8
 
 # Add compile dependencies for Microsocks
 RUN apk update && \
@@ -14,14 +14,14 @@ RUN apk update && \
 RUN wget -O /tmp/microsocks_v${MICROSOCKS_V}.tar.gz https://github.com/rofl0r/microsocks/archive/refs/tags/v${MICROSOCKS_V}.tar.gz && \
     tar -C /tmp -xzvf /tmp/microsocks_v${MICROSOCKS_V}.tar.gz && \
     cd /tmp/microsocks-${MICROSOCKS_V} && \
-    make -j $(nproc -all) && \
+    make -j$(nproc --all) && \
     DESTDIR=/tmp/copy make install
 
 # Download hide.me binary and move binary to copy directory
-RUN wget -O /tmp/hide.me_v${HIDEME_V}.tar.gz https://github.com/eventure/hide.client.linux/releases/download/${HIDEME_V}/hide.me-linux-amd64-${HIDEME_V}.tar.xz && \
+RUN wget -O /tmp/hide.me_v${HIDEME_V}.tar.gz https://github.com/eventure/hide.client.linux/releases/download/${HIDEME_V}/hide.me-linux-amd64-${HIDEME_V}.tar.gz && \
     tar -C /tmp -xvf /tmp/hide.me_v${HIDEME_V}.tar.gz && \
     mkdir -p /tmp/copy/usr/bin && \
-    cp /tmp/hide.me /tmp/copy/usr/bin/hide.client.linux
+    cp /tmp/hide.me /tmp/copy/usr/bin/hide.me
 
 FROM alpine:latest
 
@@ -44,21 +44,29 @@ RUN mkdir /lib64 && \
     ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 # Add Bash shell & dependancies
-RUN apk add --no-cache bash busybox-suid su-exec
+RUN apk add --no-cache bash busybox-suid su-exec screen
+
+# Default env variables
+ENV HIDEME_SOCKS="on"
+ENV HIDEME_PRIVOXY="on"
+ENV CA_FILEPATH="/config/cert.pem"
+ENV AT_FILEPATH="/config/accessToken.txt"
+ENV PR_FILEPATH="/config/privoxy_config"
+ENV START_PARAMS=""
+ENV TOKEN_PARAMS=""
 
 # Volumes
 VOLUME /config
 
 # Add Files
-RUN chmod +x /usr/bin/hide.client.linux
-COPY hideme.yaml /
-COPY CA.pem /
-COPY startups /startups
+RUN chmod +x /usr/bin/hide.me
+COPY defaults /opt/defaults
+COPY startups /opt/startups
 
-RUN find /startups -name run | xargs chmod u+x
+RUN find /opt/startups -name run | xargs chmod u+x
 
 # Add Expose Port
 EXPOSE 8080 1080
 
 # Command
-CMD ["runsvdir", "/startups"]
+CMD ["runsvdir", "/opt/startups"]

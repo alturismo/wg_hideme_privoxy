@@ -1,47 +1,45 @@
 #!/bin/bash
 
-HIDEME_FILEPATH="/config/${HIDEME_FILE}"
-
-if [ -f "$HIDEME_FILEPATH" ]; then
-	echo "$HIDEME_FILEPATH exist"
-	chmod +x $HIDEME_FILEPATH
-	chmod 777 $HIDEME_FILEPATH
-else 
-	echo "$HIDEME_FILEPATH does not exist, copy default"
-	cp /hideme.yaml /config/hideme.yaml
-	chmod +x /config/hideme.yaml
-	chmod 777 /config/hideme.yaml
+### remove old files if exists
+if [ -f /config/hideme.yaml ]; then
+  rm -f /config/hideme.yaml
+fi
+if [ -f /config/CA.pem ]; then
+  rm -f /config/CA.pem
 fi
 
-CA_FILEPATH="/config/CA.pem"
-
-if [ -f "$CA_FILEPATH" ]; then
-	echo "$CA_FILEPATH exist"
-	chmod +x $CA_FILEPATH
-	chmod 777 $CA_FILEPATH
+### check if cert is in place
+if [ -f "${CA_FILEPATH}" ]; then
+  echo "${CA_FILEPATH} exist"
+  chmod 777 ${CA_FILEPATH}
 else 
-	echo "$CA_FILEPATH does not exist, copy default"
-	cp /CA.pem /config/CA.pem
-	chmod +x /config/CA.pem
-	chmod 777 /config/CA.pem
+  echo "${CA_FILEPATH} does not exist, copy default"
+  cp /opt/defaults/CA.pem ${CA_FILEPATH}
+  chmod 777 ${CA_FILEPATH}
+fi
+
+### display error if no user, password, server was specified
+if [ -z "${HIDEME_USER}" ] || [ -z "${HIDEME_PASS}" ] || [ -z "${HIDEME_SERVER}" ] || [ -z "${LOCAL_NET}" ]; then
+  echo "Error: One or more variables where not passed over!"
+  echo "You have to specify: HIDEME_USER, HIDEME_PASS, HIDEME_SERVER & LOCAL_NET"
+  sleep infinity
 fi
 
 ### get access token if not exist
-
-AT_FILEPATH="/config/accessToken.txt"
-
-if [ -f "$AT_FILEPATH" ]; then
-	echo "$AT_FILEPATH exist"
-	chmod +x $AT_FILEPATH
-	chmod 777 $AT_FILEPATH
+if [ -f "${AT_FILEPATH}" ]; then
+  echo "${AT_FILEPATH} exist"
+  chmod 777 ${AT_FILEPATH}
 else 
-	echo "$AT_FILEPATH does not exist, creating new one"
-	hide.client.linux -ca $CA_FILEPATH -u ${HIDEME_USER} -P ${HIDEME_PASS} token ${HIDEME_SERVER}
-	cp accessToken.txt "$AT_FILEPATH"
-	chmod +x /config/accessToken.txt
-	chmod 777 /config/accessToken.txt
+  echo "${AT_FILEPATH} does not exist, creating new one"
+  screen -S token -d -m bash -c "/usr/bin/hide.me -ca ${CA_FILEPATH} -u ${HIDEME_USER} -P ${HIDEME_PASS} -t ${AT_FILEPATH} ${TOKEN_PARAMS} token ${HIDEME_SERVER%%.*}"
+  while screen -list | grep -q "token"; do
+    echo "Creating ${AT_FILEPATH}"
+    sleep 5
+  done
+  echo "${AT_FILEPATH} created!"
+  chmod 777 /config/accessToken.txt
 fi
 
 ### start HideMe
 
-hide.client.linux -4 -s ${LOCAL_NET} -ca $CA_FILEPATH -t $AT_FILEPATH -u ${HIDEME_USER} -P ${HIDEME_PASS} -c /config/hideme.yaml connect ${HIDEME_SERVER}
+/usr/bin/hide.me -4 -s ${LOCAL_NET} -ca ${CA_FILEPATH} -t ${AT_FILEPATH} -u ${HIDEME_USER} -P ${HIDEME_PASS} ${START_PARAMS} connect ${HIDEME_SERVER%%.*}
