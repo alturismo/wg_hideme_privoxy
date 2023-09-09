@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.authors="alturismo@gmail.com"
 
 # Set Variables
 ARG MICROSOCKS_V=1.0.3
-ARG HIDEME_V=0.9.2
+ARG HIDEME_V=0.9.8
 
 # Add compile dependencies for Microsocks
 RUN apk update && \
@@ -21,7 +21,7 @@ RUN wget -O /tmp/microsocks_v${MICROSOCKS_V}.tar.gz https://github.com/rofl0r/mi
 RUN wget -O /tmp/hide.me_v${HIDEME_V}.tar.gz https://github.com/eventure/hide.client.linux/releases/download/${HIDEME_V}/hide.me-linux-amd64-${HIDEME_V}.tar.xz && \
     tar -C /tmp -xvf /tmp/hide.me_v${HIDEME_V}.tar.gz && \
     mkdir -p /tmp/copy/usr/bin && \
-    cp /tmp/hide.me /tmp/copy/usr/bin/hide.client.linux
+    cp /tmp/hide.me /tmp/copy/usr/bin/hide.me
 
 FROM alpine:latest
 
@@ -46,9 +46,6 @@ RUN mkdir /lib64 && \
 # Add Bash shell & dependancies
 RUN apk add --no-cache bash busybox-suid su-exec
 
-# Volumes
-VOLUME /config
-
 # Default env variables
 ENV HIDEME_SOCKS="on"
 ENV HIDEME_PRIVOXY="on"
@@ -56,6 +53,9 @@ ENV CA_FILEPATH="/config/cert.pem"
 ENV AT_FILEPATH="/config/accessToken.txt"
 ENV PR_FILEPATH="/config/privoxy_config"
 ENV START_PARAMS=""
+
+# Volumes
+VOLUME /config
 
 # Add Files
 RUN chmod +x /usr/bin/hide.me
