@@ -14,7 +14,7 @@ RUN apk update && \
 RUN wget -O /tmp/microsocks_v${MICROSOCKS_V}.tar.gz https://github.com/rofl0r/microsocks/archive/refs/tags/v${MICROSOCKS_V}.tar.gz && \
     tar -C /tmp -xzvf /tmp/microsocks_v${MICROSOCKS_V}.tar.gz && \
     cd /tmp/microsocks-${MICROSOCKS_V} && \
-    make -j$(nproc -all) && \
+    make -j$(nproc --all) && \
     DESTDIR=/tmp/copy make install
 
 # Download hide.me binary and move binary to copy directory
