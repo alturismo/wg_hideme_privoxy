@@ -14,11 +14,11 @@ RUN apk update && \
 RUN wget -O /tmp/microsocks_v${MICROSOCKS_V}.tar.gz https://github.com/rofl0r/microsocks/archive/refs/tags/v${MICROSOCKS_V}.tar.gz && \
     tar -C /tmp -xzvf /tmp/microsocks_v${MICROSOCKS_V}.tar.gz && \
     cd /tmp/microsocks-${MICROSOCKS_V} && \
-    make -j $(nproc -all) && \
+    make -j$(nproc -all) && \
     DESTDIR=/tmp/copy make install
 
 # Download hide.me binary and move binary to copy directory
-RUN wget -O /tmp/hide.me_v${HIDEME_V}.tar.gz https://github.com/eventure/hide.client.linux/releases/download/${HIDEME_V}/hide.me-linux-amd64-${HIDEME_V}.tar.xz && \
+RUN wget -O /tmp/hide.me_v${HIDEME_V}.tar.gz https://github.com/eventure/hide.client.linux/releases/download/${HIDEME_V}/hide.me-linux-amd64-${HIDEME_V}.tar.gz && \
     tar -C /tmp -xvf /tmp/hide.me_v${HIDEME_V}.tar.gz && \
     mkdir -p /tmp/copy/usr/bin && \
     cp /tmp/hide.me /tmp/copy/usr/bin/hide.me

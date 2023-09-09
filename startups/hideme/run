@@ -18,6 +18,13 @@ else
   chmod 777 ${CA_FILEPATH}
 fi
 
+### display error if no user, password, server was specified
+if [ -z "${HIDEME_USER}" ] || [ -z "${HIDEME_PASS}" ] || [ -z "${HIDEME_SERVER}" ] || [ -z "${LOCAL_NET}" ]; then
+  echo "Error: One or more variables where not passed over!"
+  echo "You have to specify: HIDEME_USER, HIDEME_PASS, HIDEME_SERVER & LOCAL_NET"
+  sleep infinity
+fi
+
 ### get access token if not exist
 if [ -f "${AT_FILEPATH}" ]; then
   echo "${AT_FILEPATH} exist"
