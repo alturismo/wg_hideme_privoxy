@@ -31,8 +31,7 @@ if [ -f "${AT_FILEPATH}" ]; then
   chmod 777 ${AT_FILEPATH}
 else 
   echo "${AT_FILEPATH} does not exist, creating new one"
-  cd /config
-  /usr/bin/hide.me -ca ${CA_FILEPATH} -u ${HIDEME_USER} -P ${HIDEME_PASS} token ${HIDEME_SERVER%%.*}
+  /usr/bin/hide.me -ca ${CA_FILEPATH} -u ${HIDEME_USER} -P ${HIDEME_PASS} -t ${AT_FILEPATH} ${TOKEN_PARAMS} token ${HIDEME_SERVER%%.*}
   chmod 777 /config/accessToken.txt
 fi
 
