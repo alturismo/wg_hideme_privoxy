@@ -31,7 +31,7 @@ if [ -f "${AT_FILEPATH}" ]; then
   chmod 777 ${AT_FILEPATH}
 else 
   echo "${AT_FILEPATH} does not exist, creating new one"
-  screen -S token -d -m bash -c "/usr/bin/hide.me -ca ${CA_FILEPATH} -u ${HIDEME_USER} -P ${HIDEME_PASS} -t ${AT_FILEPATH} ${TOKEN_PARAMS} token ${HIDEME_SERVER%%.*}"
+  screen -S token -d -m bash -c "/usr/bin/hide.me -ca ${CA_FILEPATH} -u \"${HIDEME_USER}\" -P \"${HIDEME_PASS}\" -t ${AT_FILEPATH} ${TOKEN_PARAMS} token ${HIDEME_SERVER%%.*}"
   while screen -list | grep -q "token"; do
     echo "Creating ${AT_FILEPATH}"
     sleep 5
