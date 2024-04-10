@@ -54,6 +54,7 @@ ENV AT_FILEPATH="/config/accessToken.txt"
 ENV PR_FILEPATH="/config/privoxy_config"
 ENV START_PARAMS=""
 ENV TOKEN_PARAMS=""
+ENV CONNECTED_CONTAINERS=""
 
 # Volumes
 VOLUME /config
