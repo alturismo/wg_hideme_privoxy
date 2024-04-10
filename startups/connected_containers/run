@@ -1,0 +1,14 @@
+#!/bin/sh
+
+### Start connected containers
+if [ -z "${CONNECTED_CONTAINERS}" ]; then
+  # dont start connected connected containers if variable is empty
+  sleep infinity
+elif ! [[ "${CONNECTED_CONTAINERS}" =~ ^[0-9]+$ ]] || [ "${CONNECTED_CONTAINERS}" -lt 1024 ] || [ "${CONNECTED_CONTAINERS}" -gt 65535 ]; then
+  echo "Error: The variable CONNECTED_CONTAINERS is not set properly!"
+  echo "Please set it to a value between 1024 and 65535"
+  sleep infinity
+else
+  echo "Starting service for connected containers on port: $CONNECTED_CONTAINERS"
+  socat TCP-LISTEN:${CONNECTED_CONTAINERS},fork EXEC:"/bin/cat"
+fi

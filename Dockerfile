@@ -3,8 +3,8 @@ FROM alpine:latest AS builder
 LABEL org.opencontainers.image.authors="alturismo@gmail.com"
 
 # Set Variables
-ARG MICROSOCKS_V=1.0.3
-ARG HIDEME_V=0.9.8
+ARG MICROSOCKS_V=1.0.4
+ARG HIDEME_V=0.9.9
 
 # Add compile dependencies for Microsocks
 RUN apk update && \
@@ -44,7 +44,7 @@ RUN mkdir /lib64 && \
     ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 # Add Bash shell & dependancies
-RUN apk add --no-cache bash busybox-suid su-exec screen
+RUN apk add --no-cache bash busybox-suid su-exec screen socat
 
 # Default env variables
 ENV HIDEME_SOCKS="on"
@@ -54,6 +54,7 @@ ENV AT_FILEPATH="/config/accessToken.txt"
 ENV PR_FILEPATH="/config/privoxy_config"
 ENV START_PARAMS=""
 ENV TOKEN_PARAMS=""
+ENV CONNECTED_CONTAINERS=""
 
 # Volumes
 VOLUME /config
