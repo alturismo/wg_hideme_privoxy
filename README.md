@@ -15,8 +15,8 @@ docker run -d \
   -e TZ="Europe/Berlin" \
   -e LOCAL_NET=192.168.1.0/24 \
   -e HIDEME_SERVER=de \
-  -e HIDEME_USER=hidemeLogin \
-  -e HIDEME_PASS=hidemePass \
+  -e HIDEME_USER="hidemeLogin" \
+  -e HIDEME_PASS="hidemePass" \
   -p 8080:8080/tcp \
   -p 1080:1080/tcp \
   -v /mnt/user/appdata/wg_hideme_privoxy/:/config:rw \
