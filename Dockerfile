@@ -11,10 +11,6 @@ RUN wget -O /tmp/hide.me_v${HIDEME_V}.tar.gz https://github.com/eventure/hide.cl
     mkdir -p /tmp/copy/usr/bin && \
     cp /tmp/hide.me /tmp/copy/usr/bin/hide.me
 
-# Add socks5 proxy
-ADD socks5 /usr/bin/socks5
-RUN chmod +x /usr/bin/socks5
-
 #
 FROM alpine:latest
 
@@ -56,6 +52,10 @@ VOLUME /config
 RUN chmod +x /usr/bin/hide.me
 COPY defaults /opt/defaults
 COPY startups /opt/startups
+
+# Add socks5 proxy
+COPY socks5 /usr/bin/socks5
+RUN chmod +x /usr/bin/socks5
 
 RUN find /opt/startups -name run | xargs chmod u+x
 
