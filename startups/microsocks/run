@@ -1,8 +1,8 @@
 #!/bin/sh
 
-### Start microsocks
+### Start socks5
 if [ ${HIDEME_SOCKS} == "off" ]; then
-  echo "microsocks disabled"
+  echo "socks5 disabled"
   sleep infinity
 else
   ### wait until hide.me connect is found
@@ -11,6 +11,6 @@ else
   done
   sleep 3
   # start
-  echo "microsocks started"
-  microsocks
+  echo "socks5 started"
+  socks5
 fi
