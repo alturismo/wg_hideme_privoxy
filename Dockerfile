@@ -4,9 +4,10 @@ LABEL org.opencontainers.image.authors="alturismo@gmail.com"
 
 # Set Variables
 ARG HIDEME_V=0.9.9
+ARG TARGETARCH
 
 # Download hide.me binary and move binary to copy directory
-RUN wget -O /tmp/hide.me_v${HIDEME_V}.tar.gz https://github.com/eventure/hide.client.linux/releases/download/${HIDEME_V}/hide.me-linux-amd64-${HIDEME_V}.tar.gz && \
+RUN wget -O /tmp/hide.me_v${HIDEME_V}.tar.gz https://github.com/eventure/hide.client.linux/releases/download/${HIDEME_V}/hide.me-linux-$TARGETARCH-${HIDEME_V}.tar.gz && \
     tar -C /tmp -xvf /tmp/hide.me_v${HIDEME_V}.tar.gz && \
     mkdir -p /tmp/copy/usr/bin && \
     cp /tmp/hide.me /tmp/copy/usr/bin/hide.me
